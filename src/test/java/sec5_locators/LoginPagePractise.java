@@ -12,21 +12,31 @@ import org.testng.Assert;
 public class LoginPagePractise {
 
 	static String url = "https://www.rahulshettyacademy.com/loginpagePractise/";
-	public static void main(String[] args) {
+	static String user;
+	static String password;
+	public static void main(String[] args) throws InterruptedException {
 		
 		System.setProperty("webdriver.chrome.driver", "C:\\Users\\c.umakanthsai\\Documents\\Projects\\Selenium_maven\\Selenium_Automation\\web_drivers\\chrome_97\\chromedriver.exe");
-		WebDriver obj = new ChromeDriver();
-		obj.get(url);
-		obj.manage().window().maximize();
-		obj.findElement(By.cssSelector("input#username")).sendKeys("UmakanthSai");
-		obj.findElement(By.cssSelector("input#password")).sendKeys("Uk@97");
-		Assert.assertEquals(true, obj.findElement(By.xpath("//label[@class='customradio'][2]/span[2]")).isEnabled());
-		WebElement list = obj.findElement(By.cssSelector("select.form-control"));
+		WebDriver driver = new ChromeDriver();
+		driver.get(url);
+		driver.manage().window().maximize();
+		
+		user = driver.findElement(By.xpath("//p[@class='text-center text-white']/b[1]/i")).getText();
+		password = driver.findElement(By.xpath("//p[@class='text-center text-white']/b[2]/i")).getText();
+		
+		driver.findElement(By.cssSelector("input#username")).sendKeys(user);
+		driver.findElement(By.cssSelector("input#password")).sendKeys(password);
+		Assert.assertEquals(true, driver.findElement(By.xpath("//label[@class='customradio'][2]/span[2]")).isEnabled());
+		WebElement list = driver.findElement(By.cssSelector("select.form-control"));
 		Select sel = new Select(list);
-		System.out.println(sel.getAllSelectedOptions().toString());
+		Assert.assertEquals(sel.getFirstSelectedOption().getText(), "Student");
+		driver.findElement(By.xpath("//input[@id='terms']")).click();
+		driver.findElement(By.id("signInBtn")).click();
 		
 		
-		//obj.quit();
+		Thread.sleep(10000);
+		driver.quit();
+	
 		
 
 	}
